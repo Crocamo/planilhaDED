@@ -1,0 +1,16 @@
+table#personalidade input[type="text"] {
+    width:60px;
+}
+  
+table#personalidade {
+    background-color: #fffccc
+}
+
+table#habilidade input[type="number"] {
+    width:40px;
+}
+
+table#habilidade tr#topics {
+    font-size: 8px;
+    font-weight: 900;
+}
