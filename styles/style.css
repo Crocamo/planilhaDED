@@ -1,3 +1,10 @@
+body {
+    font-size: 8px;
+    font-weight: 900;
+   }
+
+/*campos de personalidade*/
+
 table#personalidade input[type="text"] {
     width:60px;
 }
@@ -6,11 +13,38 @@ table#personalidade {
     background-color: #fffccc
 }
 
+/*Campos de habilidade*/
 table#habilidade input[type="number"] {
     width:40px;
 }
 
-table#habilidade tr#topics {
-    font-size: 8px;
+
+/*campos de sobrevivencia*/
+table#sobrevi strong {
+    font-size: 10px;
     font-weight: 900;
+}
+
+table#sobrevi input[type="number"] {
+    width:70px;
+}
+table#sobrevi input[type="text"] {
+    width:70px;
+}
+
+
+/*campos de resistencias*/
+table#resist input[type="text"] {
+    width:60px;
+}
+table#resist input[type="number"] {
+    width:40px;
+}
+
+/*Campos pericias*/
+table#periciasTab input[type="number"] {
+    width:40px;
+}
+table#periciasTab input[type="text"] {
+    width:80px;
 }
