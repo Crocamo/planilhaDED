@@ -156,7 +156,7 @@
 
       echo "<tr>
           <td><strong>CA:</strong><br> CLASSE DE ARMADURA</td>
-          <td><input type='number' id='total'></td>";
+          <td><input type='number' id='totalCA'></td>";
       for ($i = 0; $i <= 7; $i++) {
         if ($i == '0') {
           echo "
@@ -353,28 +353,6 @@
         "", "*", "", "*", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "*", "*", "*", "",
         "*", "", "", "*", "", "", "", "", "", "", "", "", "", "", "*", "*", "", "", "", "");
 
-      /*
-      <span id="outputWord"></span> 
-    </p> 
-  
-    <button onclick="removeCharacterFromString()"> 
-        Remove Character 
-    </button> 
-      
-    <script type="text/javascript"> 
-        const removeCharacterFromString = () => { 
-            originalWord = 'DelftStack'; 
-            newWord = originalWord.replace(/t/g, ''); 
-  
-            document.querySelector('#outputWord').textContent  
-                    = newWord; 
-        } 
-    </script>
-*/
-
-
-
-
 
       for ($i = 0; $i <= 42; $i++) {
         echo "<tr>
@@ -382,9 +360,9 @@
           <td>$pericias[$i]</td> 
           <td>$habPeri[$i]$hesht[$i]</td> 
           <td><input type='number'id='modPericia$i'></td>
-          <td><input type='number' name='$habPeri[$i]' id='modHab$i'></td>
-          <td><input type='number' id='graduaPericia$i'></td>
-          <td><input type='number' id='periciaOutros$i'></td>        
+          <td><input type='number' name='$habPeri[$i]' id='modHab$i' onchange=calcula_pericia($i)></td>
+          <td><input type='number' id='graduaPericia$i' onchange=calcula_pericia($i)></td>
+          <td><input type='number' id='periciaOutros$i' onchange=calcula_pericia($i)></td>        
          </tr> ";
       }
       ?>

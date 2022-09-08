@@ -14,12 +14,12 @@ function somaMod(valor) {
 
     } else {
         var resp = ('mod' + valor);
-        attAtributos(valor, total, val);
+        attAtributos(valor, total);
     }
     document.getElementById(resp).value = total;
 }
 
-function attAtributos(atributo, modif, tval) {
+function attAtributos(atributo, modif) {
 
     var atrib = atributo.charAt(5);
     
@@ -35,6 +35,7 @@ function attAtributos(atributo, modif, tval) {
             /*des */
             for (let i = 0; i < document.getElementsByName('DES').length; i++) {
                 document.getElementsByName('DES')[i].value = modif;
+                
             }
             break;
         case "2":
@@ -63,4 +64,6 @@ function attAtributos(atributo, modif, tval) {
             break;
     }
 
+
+    
 }

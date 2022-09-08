@@ -1,83 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/style.css"/>
-    
+    <link rel="stylesheet" href="styles/style.css" />
+
     <title>Planilha 3.5 D&D</title>
-    <script>
-        function calcula(valor){
-
-
-          /*  var val = document.getElementById(valor).value;
-            if (val <=0){
-                var total = "-5";
-            }else if(val<=9){
-                var total = parseInt((val-10)/2-0.5);
-            }else{
-                var total = parseInt((val-10)/2);
-            }
-            if(valor=="valT"){
-                document.getElementById('modT').value = total;
-            }else{
-                document.getElementById('mod').value = total; 
-            }*/
-        }
-    </script>
 </head>
+
 <body>
-<form action="" method="post">
-   <!--valor de atributos-->
+    <form action="" method="post">
+        <input type="text" id="teste">
+  <!--valor de atributos-->
   <fieldset>
     <legend>atributos</legend>
     <table id="habilidade">
-
-      <?php
+        <?php
       $atrib = array("FOR: FORÇA", "DES: DESTREZA", "CON: CONSTITUIÇÃO", "INT: INTELIGENCIA", "SAB: SABEDORIA", "CAR: CARISMA");
 
       for ($i = 0; $i <= 5; $i++) {
         echo "<tr>
           <td>$atrib[$i]</td> 
-          <td><input type='number' id='atrib$i' value='10' onChange=calcula(atrib$i)></td>
-          <td><input type='number' id='modatrib$i' value='0'></td> 
-          <td><input type='number' id='tatrib$i' onChange=calcula(valor)></td> 
-          <td><input type='number' id='modtatrib$i'></td> 
+          <td><input type='number' id='at$i' value='10' onchange=calcula('at',$i)></td>
+          <td><input type='number' id='ma$i' value='0' onchange=calcula('ma',$i)></td> 
+          <td><input type='number' id='ta$i' onchange=calcula('ta',$i)></td> 
+          <td><input type='number' id='mt$i' onchange=calcula('mt',$i)></td> 
          </tr> ";
       }
       ?>
     </table>
   </fieldset>
 
-  <!--PV, deslocamento e CA-->
-  <fieldset>
-    <legend>sobrevivencias</legend>
-    <table id="sobrevi">
-       <?php
-      $CAarray = array("caBase", "caArmor", "caShield", "caDes", "caTam", "caNat", "caDefle", "caOutros");
-
-      echo "<tr>
-          <td><strong>CA:</strong><br> CLASSE DE ARMADURA</td>
-          <td><input type='number' id='totalCA'></td>";
-      for ($i = 0; $i <= 7; $i++) {
-        if ($i == '0') {
-          echo "
-          <td><input type='number' value='10' readonly id='$CAarray[$i]'></td>";
-        }elseif ($i == '3') {
-          echo "
-          <td><input type='number' name='DES' id='$CAarray[$i]' onChange=calcula_ca()></td>";
-        } else {
-          echo "
-          <td><input type='number' id='$CAarray[$i]' onChange=calcula_ca()></td>";
-        }
-      };
-      echo "
-        </tr>
-          ";
-      ?>
-  </fieldset>
-
+  
   <!--RESISTENCIAS-->
   <fieldset>
     <table id="resist">
@@ -88,20 +44,20 @@
         echo
         "<tr>
           <td>$resists[$i]</td> 
-          <td><input type='number' id='resTotal$i'></td>
-          <td><input type='number' id='resBase$i'></td> 
-          <td><input type='number' name='$atrib_nome[$i]' id='resModHabi$i'></td> 
-          <td><input type='number' id='resModMag$i'></td> 
-          <td><input type='number' id='resOutros$i'></td> 
-          <td><input type='number' id='resModMag$i'></td> 
+          <td><input type='number' id='rT$i'></td> <!--total-->
+          <td><input type='number' id='rB$i'></td> <!--resistencia base-->
+          <td><input type='number' name='$atrib_nome[$i]' id='rA$i'></td> <!--mod atrib-->
+          <td><input type='number' id='rM$i'></td> <!--mod magic-->
+          <td><input type='number' id='rO$i'></td> <!--outros bonus-->
+          <td><input type='number' id='rt$i'></td> <!-- mod temp-->
         </tr> ";
       }
       ?>
     </table>
   </fieldset>
-  <!--Pericias-->
-  <fieldset>
-  <legend>pericias</legend>
+
+   <!--Pericias-->
+   <fieldset>
     <table id="periciasTab">
       <tr>
         <td>PERÍCIAS</td>
@@ -142,10 +98,10 @@
           <td><input type='checkbox'></td>
           <td>$pericias[$i]</td> 
           <td>$habPeri[$i]$hesht[$i]</td> 
-          <td><input type='number'id='modPericia$i'></td>
-          <td><input type='number' name='$habPeri[$i]' id='modHab$i' onchange=calcula_pericia($i)></td>
-          <td><input type='number' id='graduaPericia$i' onchange=calcula_pericia($i)></td>
-          <td><input type='number' id='periciaOutros$i' onchange=calcula_pericia($i)></td>        
+          <td><input type='number'id='mP$i'></td>
+          <td><input type='number' name='$habPeri[$i]' id='mH$i' onchange=calcula_pericia($i)></td>
+          <td><input type='number' id='gP$i' onchange=calcula_pericia($i)></td>
+          <td><input type='number' id='pO$i' onchange=calcula_pericia($i)></td>        
          </tr> ";
       }
       ?>
@@ -179,6 +135,8 @@
       </tr>
     </table>
   </fieldset>
-</form>
+    </form>
+    <script src="js/jsteste.js"></script>
 </body>
+
 </html>
