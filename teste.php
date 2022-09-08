@@ -12,7 +12,6 @@
 
 <body>
     <form action="" method="post">
-        <input type="text" id="teste">
   <!--valor de atributos-->
   <fieldset>
     <legend>atributos</legend>
@@ -33,6 +32,71 @@
     </table>
   </fieldset>
 
+    <!--PV, deslocamento e CA-->
+    <fieldset>
+    <legend>sobrevivencias</legend>
+    <table id="sobrevi">
+      <tr>
+        <td><strong>PV:</strong><br> PONTOS DE VIDA</td>
+        <td><input type="number" id="pvtotal"></td>
+        <td><input type="number" id="pvatual"></td>
+        <td><input type="number" id="pvcontusao"></td>
+        <td><input type="text" id="deslocamento"></td>
+      </tr>
+
+      <?php
+      //dTot=def total, dB=base, dA=armor, dS=shield, dD=Des, dT=tamanho, dN= natural, dF= deflex, dO= outros.
+      $CAarray = array("dB", "dA", "dS", "dD", "dT", "dN", "dF", "dO");
+
+      echo "<tr>
+          <td><strong>CA:</strong><br> CLASSE DE ARMADURA</td>
+          <td><input type='number' readonly id='dTot'></td>";
+      for ($i = 0; $i <= 7; $i++) {
+        if ($i == '0') {
+          echo "
+          <td><input type='number' value='10' readonly id='$CAarray[$i]'></td>";
+        }elseif ($i == '3') {
+          echo "
+          <td><input type='number' name='DES' id='$CAarray[$i]' onchange=calcula_totais('dD',$i)></td>";
+        } else {
+          echo "
+          <td><input type='number' id='$CAarray[$i]' onchange=calcula_totais('dD',$i)></td>";
+        }
+      };
+      echo "
+          <td><input type='text' id='RD'></td>
+        </tr>
+          ";
+      ?>
+
+      <tr>
+        <td></td>
+        <td>TOTAL</td>
+        <td></td>
+        <td>BONUS DE<br> ARMADURA</td>
+        <td>BONUS DE<br> ESCUDO</td>
+        <td>MOD. DE<br> DESTREZA</td>
+        <td>MOD. <br>TAMANHO</td>
+        <td>ARMADURA <br>NATURAL</td>
+        <td>MOD. DE<br> DEFLEXÃO</td>
+        <td>OUTROS</td>
+        <td>REDUÇÃO <br>DE DANO</td>
+      </tr>
+      <tr>
+        <td><strong>TOQUE:</strong><br> CLASSE DE ARMADURA</td>
+        <td><input type="number" id="cT"></td>
+        <td><strong>SURPRESA:</strong><br> CLASSE DE ARMADURA</td>
+        <td><input type="number" id="cS"></td>
+      </tr>
+      <tr>
+        <td><strong>INICIATIVA:</strong><br> MODIFICADOR</td>
+        <td><input type="number" id="iT"></td>
+        <td><input type="number" name="DES" id="iD" onchange=calcula_totais('iD','0')></td>
+        <td><input type="number" id="iO" onchange=calcula_totais('iO','0')></td>
+      </tr>
+    </table>
+  </fieldset>
+
   
   <!--RESISTENCIAS-->
   <fieldset>
@@ -44,12 +108,12 @@
         echo
         "<tr>
           <td>$resists[$i]</td> 
-          <td><input type='number' id='rT$i'></td> <!--total-->
-          <td><input type='number' id='rB$i'></td> <!--resistencia base-->
-          <td><input type='number' name='$atrib_nome[$i]' id='rA$i'></td> <!--mod atrib-->
-          <td><input type='number' id='rM$i'></td> <!--mod magic-->
-          <td><input type='number' id='rO$i'></td> <!--outros bonus-->
-          <td><input type='number' id='rt$i'></td> <!-- mod temp-->
+          <td><input type='number' readonly id='rT$i'></td> <!--total-->
+          <td><input type='number' id='rB$i' onchange=calcula_totais('rA',$i)></td> <!--resistencia base-->
+          <td><input type='number' name='$atrib_nome[$i]' id='rA$i' onchange=calcula_totais('rA',$i)></td> <!--mod atrib-->
+          <td><input type='number' id='rM$i' onchange=calcula_totais('rA',$i)></td> <!--mod magic-->
+          <td><input type='number' id='rO$i' onchange=calcula_totais('rA',$i)></td> <!--outros bonus-->
+          <td><input type='number' id='rt$i' onchange=calcula_totais('rA',$i)></td> <!-- mod temp-->
         </tr> ";
       }
       ?>
@@ -98,10 +162,10 @@
           <td><input type='checkbox'></td>
           <td>$pericias[$i]</td> 
           <td>$habPeri[$i]$hesht[$i]</td> 
-          <td><input type='number'id='mP$i'></td>
-          <td><input type='number' name='$habPeri[$i]' id='mH$i' onchange=calcula_pericia($i)></td>
-          <td><input type='number' id='gP$i' onchange=calcula_pericia($i)></td>
-          <td><input type='number' id='pO$i' onchange=calcula_pericia($i)></td>        
+          <td><input type='number' readonly id='pM$i'></td>
+          <td><input type='number' name='$habPeri[$i]' id='pH$i' onchange=calcula_totais('pH',$i)></td>
+          <td><input type='number' id='pG$i' onchange=calcula_totais('pH',$i)></td>
+          <td><input type='number' id='pO$i' onchange=calcula_totais('pH',$i)></td>        
          </tr> ";
       }
       ?>

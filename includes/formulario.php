@@ -117,14 +117,12 @@
       $atrib = array("FOR: FORÇA", "DES: DESTREZA", "CON: CONSTITUIÇÃO", "INT: INTELIGENCIA", "SAB: SABEDORIA", "CAR: CARISMA");
 
       for ($i = 0; $i <= 5; $i++) {
-        $soma= "somaMod('atrib$i')";
-        $somaT= "somaMod('tatrib$i')";
         echo "<tr>
           <td>$atrib[$i]</td> 
-          <td><input type='number' id='atrib$i' value='10' onChange=$soma></td>
-          <td><input type='number' id='modatrib$i' value='0'></td> 
-          <td><input type='number' id='tatrib$i' onChange=$somaT></td> 
-          <td><input type='number' id='modtatrib$i'></td> 
+          <td><input type='number' id='at$i' value='10' onchange=calcula('at',$i)></td>
+          <td><input type='number' id='ma$i' value='0' onchange=calcula('ma',$i)></td> 
+          <td><input type='number' id='ta$i' onchange=calcula('ta',$i)></td> 
+          <td><input type='number' id='mt$i' onchange=calcula('mt',$i)></td> 
          </tr> ";
       }
       ?>
@@ -152,21 +150,22 @@
       </tr>
 
       <?php
-      $CAarray = array("caBase", "caArmor", "caShield", "caDes", "caTam", "caNat", "caDefle", "caOutros");
+      //dTot=def total, dB=base, dA=armor, dS=shield, dD=Des, dT=tamanho, dN= natural, dF= deflex, dO= outros.
+      $CAarray = array("dB", "dA", "dS", "dD", "dT", "dN", "dF", "dO");
 
       echo "<tr>
           <td><strong>CA:</strong><br> CLASSE DE ARMADURA</td>
-          <td><input type='number' id='totalCA'></td>";
+          <td><input type='number' readonly id='dTot'></td>";
       for ($i = 0; $i <= 7; $i++) {
         if ($i == '0') {
           echo "
           <td><input type='number' value='10' readonly id='$CAarray[$i]'></td>";
         }elseif ($i == '3') {
           echo "
-          <td><input type='number' name='DES' id='$CAarray[$i]' onChange=calcula_ca()></td>";
+          <td><input type='number' name='DES' id='$CAarray[$i]' onchange=calcula_totais('dD',$i)></td>";
         } else {
           echo "
-          <td><input type='number' id='$CAarray[$i]' onChange=calcula_ca()></td>";
+          <td><input type='number' id='$CAarray[$i]' onchange=calcula_totais('dD',$i)></td>";
         }
       };
       echo "
@@ -190,15 +189,15 @@
       </tr>
       <tr>
         <td><strong>TOQUE:</strong><br> CLASSE DE ARMADURA</td>
-        <td><input type="number" id="caToque"></td>
+        <td><input type="number" id="cT"></td>
         <td><strong>SURPRESA:</strong><br> CLASSE DE ARMADURA</td>
-        <td><input type="number" id="caSurpresa"></td>
+        <td><input type="number" id="cS"></td>
       </tr>
       <tr>
         <td><strong>INICIATIVA:</strong><br> MODIFICADOR</td>
-        <td><input type="number" id="iniTotal"></td>
-        <td><input type="number" name="DES" id="iniModDes"></td>
-        <td><input type="number" id="iniOutros"></td>
+        <td><input type="number" id="iT"></td>
+        <td><input type="number" name="DES" id="iD" onchange=calcula_totais('iD','0')></td>
+        <td><input type="number" id="iO" onchange=calcula_totais('iO','0')></td>
       </tr>
       <tr>
         <td></td>
@@ -230,12 +229,12 @@
         echo
         "<tr>
           <td>$resists[$i]</td> 
-          <td><input type='number' id='resTotal$i'></td>
-          <td><input type='number' id='resBase$i'></td> 
-          <td><input type='number' name='$atrib_nome[$i]' id='resModHabi$i'></td> 
-          <td><input type='number' id='resModMag$i'></td> 
-          <td><input type='number' id='resOutros$i'></td> 
-          <td><input type='number' id='resModMag$i'></td> 
+          <td><input type='number' readonly id='rT$i'></td> <!--total-->
+          <td><input type='number' id='rB$i' onchange=calcula_totais('rA',$i)></td> <!--resistencia base-->
+          <td><input type='number' name='$atrib_nome[$i]' id='rA$i' onchange=calcula_totais('rA',$i)></td> <!--mod atrib-->
+          <td><input type='number' id='rM$i' onchange=calcula_totais('rA',$i)></td> <!--mod magic-->
+          <td><input type='number' id='rO$i' onchange=calcula_totais('rA',$i)></td> <!--outros bonus-->
+          <td><input type='number' id='rt$i' onchange=calcula_totais('rA',$i)></td> <!-- mod temp-->
         </tr> ";
       }
       ?>
@@ -359,10 +358,10 @@
           <td><input type='checkbox'></td>
           <td>$pericias[$i]</td> 
           <td>$habPeri[$i]$hesht[$i]</td> 
-          <td><input type='number'id='modPericia$i'></td>
-          <td><input type='number' name='$habPeri[$i]' id='modHab$i' onchange=calcula_pericia($i)></td>
-          <td><input type='number' id='graduaPericia$i' onchange=calcula_pericia($i)></td>
-          <td><input type='number' id='periciaOutros$i' onchange=calcula_pericia($i)></td>        
+          <td><input type='number' readonly id='pM$i'></td>
+          <td><input type='number' name='$habPeri[$i]' id='pH$i' onchange=calcula_totais('pH',$i)></td>
+          <td><input type='number' id='pG$i' onchange=calcula_totais('pH',$i)></td>
+          <td><input type='number' id='pO$i' onchange=calcula_totais('pH',$i)></td>        
          </tr> ";
       }
       ?>
