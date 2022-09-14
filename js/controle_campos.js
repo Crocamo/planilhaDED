@@ -1,3 +1,4 @@
+
 function calcula(atri, vAt) {
     /*atri= atributo *vAt= valor do atributo. ex:at0*/
 
@@ -37,6 +38,11 @@ function calcula(atri, vAt) {
         case "mt":/**Modificador de atributo temporario */
             ma = atri + vAt;
             attAtributos(ma, val);
+            break;
+
+        case "bA":/**bonus base de ataque */
+            document.getElementById('aB').value = document.getElementById('bA').value;
+            calcula_totais('aA','')
             break;
     }
 }
@@ -125,73 +131,83 @@ function separaIdNum(idPericia) {
 }
 
 function calcula_totais(base, valor) {
-    var val = [], total = 0;
-    var somasArray = ['pH', 'pG', 'pO', 'dA', 'dS', 'dD', 'dT', 'dN', 'dF', 'dO', 'iD','iO','rB', 'rA', 'rM', 'rO', 'rt'];
+    var aux1="", somasArray=[""];
+
+    //pvs
+    if (base.charAt(0) == 'p') {
+        if (base.charAt(1) == 'C') {
+            somasArray = ['pV', 'pC', 'pT']
+            totais(somasArray.length-1, somasArray, 'pM')
+        }
+    }
 
     //pericias
     if (base.charAt(0) == 'p') {
         if (base.charAt(1) == 'H') {
-            for (let i = 0; i <= 2; i++) {
-                val[i] = document.getElementById(somasArray[i] + valor).value;
-                if (val[i] == "") {
-                    val[i] = 0;
-                }
-                total += parseInt(val[i]);
-
+            aux1= 'pM' + valor;
+            somasArray = ['pH', 'pG', 'pO'];
+            for (let i = 0; i < somasArray.length; i++){
+            somasArray[i] += valor;
             }
-            document.getElementById('pM' + valor).value = total;
+            totais(somasArray.length-1, somasArray, aux1)
+        }
+    }
+    
+    //agarrar
+    if (base.charAt(0) == 'a') {
+        if (base.charAt(1) == 'A') {
+            somasArray = ['aB', 'aA', 'aT', 'aO']
+            totais(somasArray.length-1, somasArray, 'aG')
         }
     }
 
     //Classe de armadura
     if (base.charAt(0) == 'd') {
-        var totToque=10,totSurpre=10;
-            for (let i = 3; i <= 9; i++) {
-                val[i] = document.getElementById(somasArray[i]).value;
-                if (val[i] == "") {
-                    val[i] = 0;
-                }
-                if (i>=5) {
-                    totToque+= parseInt(val[i]);
-                }
-                if (i!=5) {
-                    totSurpre+= parseInt(val[i]);
-                }
-                total += parseInt(val[i]);
-            }
-            total+=10;
-            document.getElementById('dTot').value = total;
-            document.getElementById('cT').value = totToque;
-            document.getElementById('cS').value = totSurpre;
+        somasArray = ['dA', 'dS', 'dD', 'dT', 'dN', 'dF', 'dO']
+        totais(somasArray.length-1, somasArray, 'dTot')
     }
 
     //resistencias
     if (base.charAt(0) == 'r') {
         if (base.charAt(1) == 'A') {
-            for (let i = 12; i < somasArray.length; i++) {
-                val[i] = document.getElementById(somasArray[i] + valor).value;
-                if (val[i] == "") {
-                    val[i] = 0;
-                }
-                total += parseInt(val[i]);
-
+            aux1= 'rT' + valor;
+            somasArray = ['rB', 'rA', 'rM', 'rO', 'rt'];
+            for (let i = 0; i < somasArray.length; i++){
+            somasArray[i] += valor;
             }
-            document.getElementById('rT' + valor).value = total;
+            totais(somasArray.length-1, somasArray, aux1)
         }
     }
 
     //iniciativa
     if (base.charAt(0) == 'i') {
-            for (let i = 10; i <= 11; i++) {
-                val[i] = document.getElementById(somasArray[i]).value;
-                if (val[i] == "") {
-                    val[i] = 0;
-                }
-                total += parseInt(val[i]);
-                console.log('val'+i+': '+val[i]);
-
-            }
-            console.log('total: '+total);
-            document.getElementById('iT').value = total;
+        totais(somasArray.length, somasArray = ['iD', 'iO'], 'iT')
     }
+}
+
+function totais(ciclo, valor, retorno) {
+   var val = [''], total = 0, totToque = 10, totSurpre = 10;
+    for (let i = 0; i <= ciclo; i++) {
+        if (document.getElementById(valor[i]).value==''){
+        val[i] = 0;
+        }else{
+            val[i] = document.getElementById(valor[i]).value;
+        }
+        total += parseInt(val[i]);
+
+        if (retorno == 'dTot'){
+            if (i >= 2) {
+                totToque += parseInt(val[i]); 
+            }
+            if (i != 2) {
+                totSurpre += parseInt(val[i]);    
+            }
+        }
+    }
+    if (retorno == 'dTot'){
+        total += 10;
+        document.getElementById('cT').value = totToque;
+        document.getElementById('cS').value = totSurpre;
+    }    
+    document.getElementById(retorno).value = total;
 }
