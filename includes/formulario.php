@@ -1,97 +1,3 @@
-  <!-- ID'S 
-      -------------------------------------------------------------------
-      atributos
-
-      at0 = for, at1 = des, at2 = con, at3 = int, at4 = sab, at5 = car.
-      atributo base = at0, at1, at2, at3, at4, at5.
-      mod de atr = ma0, ma1, ma2, ma3, ma4, ma5.
-      atri temporario = ta0,ta1,ta2,ta3, ta4, ta5.
-      mod temporario = mt1, mt2, mt3, mt4, mt5.
-
-      -------------------------------------------------------------------
-      PVs
-      
-      pv max = pM
-      pv dado = pV
-      pv con = pC
-      pv temp = pT
-      pv atual = pA
-      pv contu = pP (pancada)
-
-      -------------------------------------------------------------------
-      Classe de armadura
-
-      def total = dTot
-      def base = dB
-      def armor =  dA
-      def shield =  dS 
-      def Des = dD
-      def tamanho = dT
-      def natural = dN
-      def deflex = dF
-      def outros = dO
-
-      def toque =cT
-      def surpr = cS
-
-      -------------------------------------------------------------------
-      iniciativa
-
-      ini total = iT
-      ini des = iD
-      ini outros = iO
-
-      -------------------------------------------------------------------
-      resistencias
-
-      res total = rT
-      res base = rB
-      res atrib = rA
-      res magic = rM
-      res outro = rO
-      res temp = rT
-      -------------------------------------------------------------------
-      bba e agarrar 
-
-      bba = bA
-
-      agarrar total = aG
-      agarras bba = aB
-      Mod força = aA
-      mod tamanho = aT
-      agarrar outros = aO
-
-      -------------------------------------------------------------------
-      weapon
-
-      arma = we0, we1, we2, we4.
-      atk arma = wA0, wA1, wA2, wA4.
-      dano arma = wD0, wD1, wD2, wD4.
-      critico = wC0, wC1, wC2, wC4.
-      alcance = alc0, alc1, alc2, alc4.
-      arma tipo = wT0, wT1, wT2, wT4.
-      arma obs = wO0, wO1, wO2, wO4.
-      arma fisico = wF.
-      arma longo alcance = wL.
-
-      -------------------------------------------------------------------
-      Pericias
-
-      mod pericia total = pM0, pM1....pM42
-      mod atributo = pH0, pH1....pH42
-      graduação pericia = pG0, pG1....pG42
-      pericia outros = pO0, pO1....pO42
-
-      0 ABRIR FECHADURAS, 1 ACROBACIA, 2 ADESTRAR ANIMAIS, 3 ARTE DA FUGA, 4 ATUAÇÃO, 5 ATUAÇÃO,
-      6 ATUAÇÃO, 7 AVALIAÇÃO, 8 BLEFAR, 9 CAVALGAR, 10 CONCENTRAÇÃO, 11 CONHECIMENTO, 12 CONHECIMENTO,
-      13 CONHECIMENTO, 14 CONHECIMENTO, 15 CURA, 16 DECIFRAR ESCRITA, 17 DIPLOMACIA, 18 DISFARCE,
-      19 EQULIBRIO, 20 ESCALAR, 21 ESCONDER-SE, 22 FALSIFICAÇÃO, 23 FURTIVIDADE, 24 IDENTIFICAR MAGIA,
-      25 INTIMIDAR, 26 NATAÇÃO, 27 OBSERVAR, 28 OBTER INFORMAÇÃO, 29 OFÍCIOS, 30 OFÍCIOS, 31 OFÍCIOS,
-      32 OPERAR MECANISMOS, 33 OUVIR, 34PROCURAR, 35 PROFISSÃO, 36 PROFISSÃO, 37 PRESTIDIGITAÇÃO,
-      38 SALTAR, 39 SENTIR MOTIVAÇÃO, 40 SOBREVIVÊNCIA, 41 USAR CORDAS, 42 USAR INSTRUMENTO MÁGICO.
-
-      -----------------------------------------------------------------
-  -->
 <form action="" method="post">
   <!--dados do personagem-->
   <fieldset>
@@ -116,7 +22,7 @@
           <input type="text" id="classe">
         </td>
         <td>
-          <input type="text" id="nivel">
+          <input type="number" id="nivel" value="1" onchange="pericia_grad_max()">
         </td>
         <td>
           <input type="text" id="raca">
@@ -240,16 +146,15 @@
 
       <tr>
         <td><strong>PV:</strong><br> PONTOS DE VIDA</td>
-        <td><input type="number" readonly id="pM"></td>
-        <td><input type="number" id="pV" onchange="calcula_totais('pC','')"></td>
-        <td><input type="number" name="CON" readonly id="pC" onchange="calcula_totais('pC','')"></td>
-        <td><input type="number" id="pT" onchange="calcula_totais('pC','')"></td>
-        <td><input type="number" id="pA"></td>
-        <td><input type="number" id="pP"></td>
+        <td><input type="number" readonly id="vM"></td>
+        <td><input type="number" id="vV" onchange="calcula_totais('vC','')"></td>
+        <td><input type="number" name="CON" readonly id="vC" onchange="calcula_totais('vC','')"></td>
+        <td><input type="number" id="vT" onchange="calcula_totais('vC','')"></td>
+        <td><input type="number" id="vA"></td>
+        <td><input type="number" id="vP"></td>
         <td><input type="text" id="deslocamento"></td>
       </tr>
-      <!--<td><input type='number' name='$atrib_nome[$i]' id='rA$i' onchange=calcula_totais('rA',$i)></td> --><!--mod atrib-->
- 
+
       <?php
       //dTot=def total, dB=base, dA=armor, dS=shield, dD=Des, dT=tamanho, dN= natural, dF= deflex, dO= outros.
       $CAarray = array("dB", "dA", "dS", "dD", "dT", "dN", "dF", "dO");
@@ -386,7 +291,7 @@
         <tr>
         
           <td><input type='text' id='we$i'></td>
-          <td><input type='text' id='wA$i'></td>
+          <td><input type='text' name='ataque' id='wA$i'></td>
           <td><input type='text' id='wD$i'></td>
           <td><input type='text' id='wC$i'></td>
         </tr>
@@ -401,9 +306,9 @@
           <td><input type='text' id='wO$i'></td>
           
         <label>FISICO</label> 
-        <input type='radio' id='wF$i' name='wB' value='for'>
+        <input type='radio' id='wF$i' name='wB$i' value='FOR' onchange=tipo_arma($i)>
         <label>DISTANCIA</label>
-        <input type='radio' id='wL$i' name='wB' value='des'>
+        <input type='radio' id='wL$i' name='wB$i' value='DES' onchange=tipo_arma($i)>
 
         </tr>
         <tr>
@@ -430,8 +335,10 @@
     <table id="periciasTab">
       <tr>
         <td>PERÍCIAS</td>
-        <td>GRADUAÇÃO MÁXIMA (CLASSE/OUTRA CLASSE)</td>
-        <td>_/_</td>
+        <td>GRADUAÇÃO MÁXIMA </td>
+        <td>(CLASSE/<br>OUTRA CLASSE)</td>
+        <td><input type="number" id='gC' value="4"> / </td>
+        <td><input type="number" id='gO' value="2"></td>
       </tr>
       <tr>
         <td></td>
@@ -467,12 +374,12 @@
 
       for ($i = 0; $i <= 42; $i++) {
         echo "<tr>
-          <td><input type='checkbox'></td>
+          <td><input type='checkbox' id='pC$i' onchange=percia_grad('pH',$i)></td>
           <td>$pericias[$i]</td> 
           <td>$habPeri[$i]$hesht[$i]</td> 
           <td><input type='number' readonly id='pM$i'></td>
           <td><input type='number' name='$habPeri[$i]' id='pH$i' onchange=calcula_totais('pH',$i)></td>
-          <td><input type='number' id='pG$i' onchange=calcula_totais('pH',$i)></td>
+          <td><input type='number' name='pericia' id='pG$i'  onchange=percia_grad('pH',$i)></td>
           <td><input type='number' id='pO$i' onchange=calcula_totais('pH',$i)></td>        
          </tr> ";
       }

@@ -4,7 +4,7 @@ function calcula(atri, vAt) {
 
     //Val recebe o valor do input. ex: at0=12
     var val = document.getElementById(atri + vAt).value;
-    var mod, ma, compara;
+    var mod, ma, compara, bba;
 
     // confere de qual campo de atributo veio o dado.
     switch (atri) {
@@ -41,13 +41,15 @@ function calcula(atri, vAt) {
             break;
 
         case "bA":/**bonus base de ataque */
-            document.getElementById('aB').value = document.getElementById('bA').value;
-            calcula_totais('aA','')
+            bba = document.getElementById('bA').value;
+            document.getElementById('aB').value = bba;
+            calcula_totais('aA', '')
+            // distribuiBBA(bba)
             break;
     }
 }
 
-function calcMod(val) {
+function calcMod(val) { /**calcula e retorna modificador de atributo */  
     var total = "";
     if (val <= 0) {
         total = "-5";
@@ -60,6 +62,7 @@ function calcMod(val) {
 }
 
 function attAtributos(atributo, mod) {
+    // distribui pela tabela, todos os campos que requerem o atributo vindo de atrib.
     var temp = '';
 
     var atrib = atributo.charAt(2);
@@ -131,51 +134,52 @@ function separaIdNum(idPericia) {
 }
 
 function calcula_totais(base, valor) {
-    var aux1="", somasArray=[""];
+    /** Trata dados para calculos de campos especificos da tabela */
+    var aux1 = "", somasArray = [""];
 
     //pvs
-    if (base.charAt(0) == 'p') {
+    if (base.charAt(0) == 'v') {
         if (base.charAt(1) == 'C') {
-            somasArray = ['pV', 'pC', 'pT']
-            totais(somasArray.length-1, somasArray, 'pM')
+            somasArray = ['vV', 'vC', 'vT']
+            totais(somasArray.length - 1, somasArray, 'vM')
         }
     }
 
     //pericias
     if (base.charAt(0) == 'p') {
         if (base.charAt(1) == 'H') {
-            aux1= 'pM' + valor;
+            aux1 = 'pM' + valor;
             somasArray = ['pH', 'pG', 'pO'];
-            for (let i = 0; i < somasArray.length; i++){
-            somasArray[i] += valor;
+            for (let i = 0; i < somasArray.length; i++) {
+                somasArray[i] += valor;
             }
-            totais(somasArray.length-1, somasArray, aux1)
+            totais(somasArray.length - 1, somasArray, aux1)
         }
     }
-    
+
     //agarrar
     if (base.charAt(0) == 'a') {
         if (base.charAt(1) == 'A') {
             somasArray = ['aB', 'aA', 'aT', 'aO']
-            totais(somasArray.length-1, somasArray, 'aG')
+            totais(somasArray.length - 1, somasArray, 'aG')
         }
     }
 
     //Classe de armadura
     if (base.charAt(0) == 'd') {
         somasArray = ['dA', 'dS', 'dD', 'dT', 'dN', 'dF', 'dO']
-        totais(somasArray.length-1, somasArray, 'dTot')
+        totais(somasArray.length - 1, somasArray, 'dTot')
     }
 
     //resistencias
     if (base.charAt(0) == 'r') {
         if (base.charAt(1) == 'A') {
-            aux1= 'rT' + valor;
+            aux1 = 'rT' + valor;
             somasArray = ['rB', 'rA', 'rM', 'rO', 'rt'];
-            for (let i = 0; i < somasArray.length; i++){
-            somasArray[i] += valor;
+            for (let i = 0; i < somasArray.length; i++) {
+                somasArray[i] += valor;
             }
-            totais(somasArray.length-1, somasArray, aux1)
+            totais(somasArray.length - 1, somasArray, aux1)
         }
     }
 
@@ -186,28 +190,114 @@ function calcula_totais(base, valor) {
 }
 
 function totais(ciclo, valor, retorno) {
-   var val = [''], total = 0, totToque = 10, totSurpre = 10;
+    /** calcula dados e preenche tabela */
+    var val = [''], total = 0, totToque = 10, totSurpre = 10;
     for (let i = 0; i <= ciclo; i++) {
-        if (document.getElementById(valor[i]).value==''){
-        val[i] = 0;
-        }else{
+        if (document.getElementById(valor[i]).value == '') {
+            val[i] = 0;
+        } else {
             val[i] = document.getElementById(valor[i]).value;
         }
         total += parseInt(val[i]);
 
-        if (retorno == 'dTot'){
+        if (retorno == 'dTot') {
             if (i >= 2) {
-                totToque += parseInt(val[i]); 
+                totToque += parseInt(val[i]);
             }
             if (i != 2) {
-                totSurpre += parseInt(val[i]);    
+                totSurpre += parseInt(val[i]);
             }
         }
     }
-    if (retorno == 'dTot'){
+    if (retorno == 'dTot') {
         total += 10;
         document.getElementById('cT').value = totToque;
         document.getElementById('cS').value = totSurpre;
-    }    
+    }
     document.getElementById(retorno).value = total;
 }
+
+function pericia_grad_max() {
+    /**Atualiza graduação maxima de pericias de acordo com o level 
+     * checkbox=TRUE: graduação = nivel+3
+     * checkbox=false: graduação = nivel+3/2
+    */
+    var go,lvl = parseInt(document.getElementById('nivel').value);
+    if (lvl <= 0 || lvl == null || lvl == "") {
+        lvl = 4;
+        document.getElementById('nivel').value = '1';
+    } else {
+        lvl += 3;
+    }
+    go = parseInt(lvl / 2);
+    document.getElementById('gC').value = lvl;
+    document.getElementById('gO').value = go;
+    for (let i = 0; i < document.getElementsByName('pericia').length; i++) {
+        percia_grad('pH', i);
+    }
+}
+
+function percia_grad(base, valor) {
+    /**Controla limites do campo de graduação de pericia */
+    let checkbox = document.getElementById('pC' + valor);
+    let pericia = document.getElementById('pG' + valor);
+    let valorGradMax = "", aux1;
+    if (checkbox.checked) {
+        aux1 = 'gC';
+    } else {
+        aux1 = 'gO';
+    }
+    valorGradMax = parseInt(document.getElementById(aux1).value);
+    pericia.setAttribute("max", valorGradMax);
+
+    if (valorGradMax < pericia.value) {
+        document.getElementById('pG' + valor).value = valorGradMax;
+        calcula_totais(base, valor);
+    } else {
+        calcula_totais(base, valor);
+    };
+}
+
+/*
+function distribuiBBA(bba) {
+   let aux=[], tot;
+    for (let i = 0; i < document.getElementsByName('ataque').length; i++) {
+        aux[i]=document.getElementsByName('ataque')[i].value;
+        console.log(" bba1> "+bba+" aux1> "+aux[i]+" tot1> "+tot);
+        if (aux[i]!=""||aux[i]!=null){
+            tot=parseInt( aux[i]+bba);
+            
+            console.log(" bba2> "+bba+" aux2> "+aux[i]+" tot2> "+tot);
+        }
+        document.getElementById('wA' + i).value = aux[i];
+        console.log(" bba3> "+bba+" aux3> "+aux[i]+" tot3> "+tot);
+    }
+}
+
+
+function tipo_arma(valor) {
+    var radios = document.getElementsByName('wB' + valor);
+    var aux = [], auxAux = [],bba=0;
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            if (radios[i].value == 'DES') {
+                aux = ['ma1', 'mt1'];
+            } else {
+                aux = ['ma0', 'mt0'];
+            };
+            bba = parseInt(document.getElementById('bA').value);
+            if(bba==""){
+                bba=0;
+            }
+            for (var i = 0; i < aux.length; i++) {
+                auxAux[i] = parseInt(document.getElementById(aux[i]).value);
+                if (auxAux[i] >= 0) {
+                    auxAux[i]+=bba;
+                    document.getElementById('wA' + valor).value = auxAux;
+                }
+                
+            }
+        }
+    }
+}
+*/
